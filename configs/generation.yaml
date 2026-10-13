@@ -1,0 +1,29 @@
+_base_: base.yaml
+
+generation:
+  total_images: 10000
+  images_per_class: null           # if set: total = images_per_class * n_classes (overrides total_images)
+  balance_mode: uniform            # uniform | inverse_frequency | proportional
+  inverse_frequency_power: 1.0
+  min_per_class: 1
+  severity_min: 0.1
+  severity_max: 0.9
+  severity_steps: 9
+  healthy_severity: 0.0
+  source_pool: auto                # auto | healthy | same_class | all     (sources always come from the TRAIN split)
+  ddim_steps: 50
+  guidance_scale: 2.0              # classifier-free guidance on disease+severity
+  guidance_jitter: 0.5             # +- uniform jitter of the guidance scale per image (diversity)
+  strength: 1.0                    # 1.0 = from pure noise; <1 = SDEdit-style start from the noised source
+  eta: 0.0
+  composite: true                  # paste the untouched source background back outside the mask
+  feather: 1.5                     # px, softens the composite seam
+  crop: {enabled: true, scale: [0.7, 1.0], ratio: [0.9, 1.1], flip: true, rot90: true}
+  batch_size: 16
+  format: png                      # png | jpg
+  use_ema: true
+  precision: fp16
+
+pipeline:                          # used by run_pipeline.py only
+  oversample: 1.3                  # generate this factor more than needed to absorb quality-control rejections
+  max_rounds: 3                    # extra generation rounds to fill per-class deficits after filtering

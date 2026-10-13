@@ -1,0 +1,34 @@
+generation:
+  total_images: 5
+  images_per_class: null
+  balance_mode: uniform
+  inverse_frequency_power: 1.0
+  min_per_class: 1
+  severity_min: 0.1
+  severity_max: 0.9
+  severity_steps: 9
+  healthy_severity: 0.0
+  source_pool: auto
+  ddim_steps: 50
+  guidance_scale: 2.0
+  guidance_jitter: 0.5
+  strength: 1.0
+  eta: 0.0
+  composite: true
+  feather: 1.5
+  crop:
+    enabled: true
+    scale:
+    - 0.7
+    - 1.0
+    ratio:
+    - 0.9
+    - 1.1
+    flip: true
+    rot90: true
+  batch_size: 16
+  format: png
+  use_ema: true
+  precision: fp16
+seed: 42
+checkpoint: /nonexistent/best

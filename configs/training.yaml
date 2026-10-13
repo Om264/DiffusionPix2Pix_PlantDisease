@@ -1,0 +1,23 @@
+_base_: base.yaml
+
+train:
+  max_steps: 100000
+  batch_size: 8                    # micro-batch; effective batch = batch_size * grad_accum
+  grad_accum: 4
+  lr: 1.0e-4
+  weight_decay: 0.01
+  warmup_steps: 500
+  precision: fp16                  # fp16 | bf16 | fp32   (CPU: bf16 or fp32)
+  grad_clip: 1.0
+  ema_decay: 0.999
+  num_workers: 4
+  val_every: 1000
+  val_batches: 25
+  save_every: 1000
+  log_every: 50
+  sample_every: 0                  # >0: write a preview grid every N steps
+  cond_dropout: 0.1                # drop disease+severity (enables classifier-free guidance at generation time)
+  sev_dropout: 0.1                 # drop severity only
+  edit_weight: 1.0                 # loss weight inside the edit mask
+  bg_weight: 0.5                   # loss weight outside the edit mask
+  min_snr_gamma: 5.0               # null to disable

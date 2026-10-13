@@ -1,0 +1,6 @@
+# Tiny CPU configuration used for smoke tests (dummy data). NOT meant for real experiments.
+_base_: training.yaml
+data: {resolution: 64, max_side: 128}
+model: {preset: tiny}
+train: {max_steps: 60, batch_size: 8, grad_accum: 1, lr: 5.0e-4, warmup_steps: 5, precision: fp32, num_workers: 0,
+        val_every: 30, val_batches: 3, save_every: 30, log_every: 10, sample_every: 0}

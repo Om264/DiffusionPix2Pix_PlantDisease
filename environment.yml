@@ -1,0 +1,10 @@
+name: dpp-plant
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10          # 3.10 or 3.11 recommended
+  - pip
+  - pip:
+      # CUDA 12.x wheels (RTX 3090). Change cu121 -> cu124 etc. if your driver requires it.
+      - --extra-index-url https://download.pytorch.org/whl/cu121
+      - -r requirements.txt

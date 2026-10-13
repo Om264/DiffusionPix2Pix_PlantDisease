@@ -1,0 +1,43 @@
+_base_: base.yaml
+
+quality:
+  min_size: 64
+  blur_min: 20.0                   # variance of Laplacian (absolute floor; resolution dependent!)
+  blur_ratio_to_source: 0.25       # synthetic sharpness must be >= ratio * source sharpness
+  sharpness_ratio_max: 8.0         # sharpness above ratio * source sharpness => noise / artifacts
+  brightness: [25, 235]            # mean gray level range
+  saturated_frac_max: 0.25
+  embedder: dinov2                 # dinov2 | clip | handcrafted
+  embedder_name: facebook/dinov2-small
+  source_sim_min: 0.45             # cosine(source, synthetic) - heuristic, calibrate on your data
+  bg_l1_max: 12.0                  # mean |synthetic - source| outside the mask (0-255)
+  outside_change_max: 0.02         # fraction of background pixels that changed noticeably
+  min_change_frac: 0.01            # fraction of mask pixels that must change (else: "no disease added")
+  max_change_frac: 0.97
+  lesion_delta_min: 0.01           # disease classes: lesion-fraction increase vs source
+  healthy_lesion_max: 0.15         # healthy classes: lesion fraction must stay low
+  unnatural_hue_frac_max: 0.05     # fraction of leaf pixels with blue/purple/cyan hue
+  dedup:
+    hamming: 3
+    embed_sim: 0.985
+
+evaluation:
+  feature_extractor: dinov2        # inception | dinov2 | handcrafted
+  extractor_name: facebook/dinov2-small
+  embedder: dinov2                 # embedder for cosine similarities (dinov2 | clip | handcrafted)
+  lpips: true
+  max_images_per_class: 500
+  kid_subsets: 50
+  kid_subset_size: 100
+
+downstream:
+  arch: resnet50                   # resnet50 | efficientnet_b0 | convnext_tiny | mobilenet_v3_large
+  pretrained: true
+  epochs: 30
+  batch_size: 32
+  lr: 3.0e-4
+  image_size: 224
+  ratios: [0.0, 0.1, 0.25, 0.5, 1.0]
+  ratio_mode: per_class            # per_class | balance_to_max
+  seeds: [0, 1, 2]
+  patience: 6

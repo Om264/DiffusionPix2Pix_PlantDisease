@@ -1,0 +1,22 @@
+# Core
+torch>=2.1
+torchvision>=0.16
+diffusers>=0.25
+transformers>=4.38
+numpy
+pandas
+scipy
+scikit-learn
+scikit-image
+opencv-python-headless
+Pillow
+tqdm
+PyYAML
+matplotlib
+tabulate
+# Metrics (FID/KID with Inception features, LPIPS). Optional but recommended.
+torchmetrics
+torch-fidelity
+lpips
+# Tests
+pytest

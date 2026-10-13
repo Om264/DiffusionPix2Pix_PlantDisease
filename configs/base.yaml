@@ -1,0 +1,34 @@
+# Shared settings. Other configs inherit this file via `_base_: base.yaml`.
+seed: 42
+device: auto            # auto | cuda | cuda:0 | cpu
+
+paths:
+  data_dir: ./data/raw             # your raw dataset (Format A or B)
+  processed_dir: ./data/processed  # REAL images split into train/val/test + metadata.csv + masks
+  output_dir: ./outputs            # checkpoints/ generated/ filtered/ metrics/ visualizations/ logs/
+
+data:
+  resolution: 256                  # training / generation resolution (square)
+  max_side: 512                    # images larger than this are downscaled when preparing the dataset
+  val_frac: 0.1                    # only used for Format A (no predefined split)
+  test_frac: 0.2
+  min_images_per_class: 5
+  healthy_pattern: healthy         # regex (case-insensitive) identifying healthy classes
+  species_sep: "___"               # 'Tomato___Late_blight' -> species 'Tomato' (sources are species-matched)
+  pairing: pseudo_prior            # pseudo_prior | explicit  (see README: "Training data requirements")
+  pairs_csv: null                  # only for pairing: explicit
+  severity_mode: estimated         # real | estimated | none : which severity labels may be used as a condition
+  augment: {enabled: true, scale: [0.6, 1.0], ratio: [0.9, 1.1], flip: true, rot90: true, color_jitter: 0.05}
+  prior:   {sigma_frac: [0.02, 0.08], mix_mean: [0.0, 0.5], desat: [0.3, 1.0], region_random_prob: 0.5, region_min_frac: 0.15}
+
+model:
+  preset: small                    # tiny | small | base
+  latent: false                    # true = latent diffusion with a frozen diffusers AutoencoderKL
+  vae_path: null                   # e.g. a local copy of 'stabilityai/sd-vae-ft-mse' (latent: true)
+  unet_pretrained: null            # optional local diffusers UNet2DConditionModel (latent: true)
+  attention_head_dim: 8
+  image_grid: 4
+  num_train_timesteps: 1000
+  beta_schedule: cosine
+  prediction_type: epsilon         # epsilon | v_prediction
+  gradient_checkpointing: false
